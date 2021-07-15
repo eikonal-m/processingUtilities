@@ -486,7 +486,7 @@ def _localmax(d):
 
 
 def main():
-    # generate 100 traces at 30,000 points
+    # setup test dataset
     num_traces = 100
     num_samples = 30000
     fs = 5e9
@@ -505,7 +505,8 @@ def main():
     time_win=200e-9
     dt=20e-9
     
-    
+    t = np.arange(num_samples)/fs
+
     # plot data create
     (data, fs) = makeTestData(num_traces, num_samples, fs, freq_modes, amplitudes, ring_factor, t0, noise)
     
@@ -515,6 +516,8 @@ def main():
     #plot1 = plt.figure(1)
     plt.pcolormesh(data)
     plt.gca().invert_yaxis()
+    plt.xlabel('trace #')
+    plt.ylabel('time (ns)')
     plt.title('Raw data')
     plt.show()
     
@@ -526,6 +529,8 @@ def main():
     #plt.pcolormesh(data_filtered)
     plt.pcolormesh(data_ref)
     plt.gca().invert_yaxis()
+    plt.xlabel('trace #')
+    plt.ylabel('time (ns)')
     plt.title('Filtered data')
     plt.show()
     
@@ -533,22 +538,34 @@ def main():
     # calculate and plot signal to noise
     s2n, times_s2n = s2nstack(data, fs, time_win, dt)
     plt.plot(s2n)
+    plt.xlabel('window #')
+    plt.ylabel('S2N ratio (dB)')
+    plt.title('Signal to noise ratio')
     plt.show()
     
         
     # calculate and plot entropy
     entropy, times = relativeEntropyWindowed(data_ref_sng, data, fs, freq_max, time_win, dt)
     plt.plot(entropy)
+    plt.xlabel('window #')
+    plt.ylabel('Entropy (dB)')
+    plt.title('Entropy data vs reference')
     plt.show()
     
     # calculate and plot windowed correlation
     corr_ref, times, corrTotal = correlateWithReference(data_ref_sng, data, fs, time_win, dt)
     plt.plot(corr_ref)
+    plt.xlabel('window #')
+    plt.ylabel('Correlation')
+    plt.title('Correlation vs reference')
     plt.show()
     
      # calculate and plot cepstrum
     data_cepstrum = cepstrum(data)
     plt.plot(np.mean(data_cepstrum, axis=1))
+    plt.xlabel('time (ns)')
+    plt.ylabel('Energy (dB)')
+    plt.title('Cepstrum of data')
     plt.show()
     
     
@@ -569,8 +586,9 @@ def main():
         plt.plot(t*1e9,data_emd[:,k])
         plt.xlabel('time (ns)')
         plt.ylabel('emd(%d)' %(k+1))
-        plt.show(block=False)
-    
+        plt.show()
+        #plt.show(block=False)
+
     
     
 if __name__ == '__main__':   

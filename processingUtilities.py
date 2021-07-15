@@ -9,9 +9,9 @@ time domain signals
 versions of libraries:
 ----------------------
 Python          3.8.5
-Numpy           1.19.2
-scipy           1.5.2
-Matplotlib      3.3.2
+Numpy           1.21.0
+scipy           1.7.0
+Matplotlib      3.4.2
 ---------------------
 
 """
